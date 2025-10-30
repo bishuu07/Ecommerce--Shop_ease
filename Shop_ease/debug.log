@@ -1,0 +1,74 @@
+2025-10-30 21:11:58 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): dev.khalti.com:443
+2025-10-30 21:11:59 [DEBUG] urllib3.connectionpool: https://dev.khalti.com:443 "POST /api/v2/epayment/initiate/ HTTP/1.1" 200 None
+2025-10-30 21:12:11 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): dev.khalti.com:443
+2025-10-30 21:12:12 [DEBUG] urllib3.connectionpool: https://dev.khalti.com:443 "GET /api/v2/epayment/verify/g99EVDEntnkfhpFvgzS4Ra/ HTTP/1.1" 404 None
+2025-10-30 21:16:25 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:16:27 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/initiate/ HTTP/1.1" 200 None
+2025-10-30 21:17:56 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
+2025-10-30 21:17:56 [DEBUG] orders: pidx: 5DuTMDjvu3qkcoXpFZZS2D, order_id: 12
+2025-10-30 21:17:56 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:17:57 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/verify/ HTTP/1.1" 404 None
+2025-10-30 21:17:57 [ERROR] orders: Verification error
+Traceback (most recent call last):
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\venv\Lib\site-packages\requests\models.py", line 976, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\shop_ease\orders\views.py", line 145, in verify_payment
+    data = response.json()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\venv\Lib\site-packages\requests\models.py", line 980, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+2025-10-30 21:18:11 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:18:12 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/initiate/ HTTP/1.1" 200 None
+2025-10-30 21:18:25 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
+2025-10-30 21:18:25 [DEBUG] orders: pidx: vYwU8tQUW4GdkayHizoXDY, order_id: 13
+2025-10-30 21:18:25 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:18:26 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/verify/ HTTP/1.1" 404 None
+2025-10-30 21:18:26 [ERROR] orders: Verification error
+Traceback (most recent call last):
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\venv\Lib\site-packages\requests\models.py", line 976, in json
+    return complexjson.loads(self.text, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\shop_ease\orders\views.py", line 145, in verify_payment
+    data = response.json()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\lenovo\Desktop\P_FYP\Shop_ease\venv\Lib\site-packages\requests\models.py", line 980, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
+2025-10-30 21:21:26 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:21:27 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/initiate/ HTTP/1.1" 200 None
+2025-10-30 21:21:52 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
+2025-10-30 21:21:52 [DEBUG] orders: pidx: LLp5xKL6DDQeDMbjQEkLHG, order_id: 14
+2025-10-30 21:21:52 [DEBUG] orders: Order found: 14
+2025-10-30 21:21:52 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-10-30 21:21:53 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/lookup/ HTTP/1.1" 200 None
+2025-10-30 21:21:53 [DEBUG] orders: Response status: 200
+2025-10-30 21:21:53 [DEBUG] orders: Response body: {"pidx":"LLp5xKL6DDQeDMbjQEkLHG","total_amount":15000,"status":"Completed","transaction_id":"h8VyamCpKNcx5zTse4Z3d2","fee":450,"refunded":false}
+2025-10-30 21:21:53 [DEBUG] orders: Khalti data: {'pidx': 'LLp5xKL6DDQeDMbjQEkLHG', 'total_amount': 15000, 'status': 'Completed', 'transaction_id': 'h8VyamCpKNcx5zTse4Z3d2', 'fee': 450, 'refunded': False}

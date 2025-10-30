@@ -1,0 +1,91 @@
+<!-- templates/orders/checkout.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Checkout</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <h4>Order Summary</h4>
+            <table class="table">
+                <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>Rs {{ item.product.price }}</td>
+                        <td>Rs {{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="table-success">
+                        <td colspan="3"><strong>Total</strong></td>
+                        <td><strong>Rs {{ total }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Payment Method</h5>
+                    <form action="{% url 'orders:initiate_payment' %}" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="khalti" value="KHALTI" checked>
+                                <label class="form-check-label" for="khalti">
+                                    <strong>Khalti (Online Payment)</strong><br>
+                                    <small>Pay securely with Khalti wallet, e-banking, or card.</small>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="COD">
+                                <label class="form-check-label" for="cod">
+                                    <strong>Cash on Delivery</strong><br>
+                                    <small>Pay cash when the product is delivered to you.</small>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Khalti Script (Only if Khalti selected) -->
+                        <div id="khalti-section">
+                            <script
+                                src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.06.19.0.0.0/khalti-checkout.iffe.js"
+                                data-public-key="{{ khalti_public_key }}"
+                                data-return-url="{% url 'orders:verify_payment' %}"
+                                data-amount="{{ amount_in_paisa }}"
+                                data-purchase-order-id="temp-order-{{ request.user.id }}"
+                                data-button-text="Pay with Khalti">
+                            </script>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Toggle Khalti section based on payment method
+document.addEventListener('DOMContentLoaded', function() {
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const khaltiSection = document.getElementById('khalti-section');
+    
+    if (paymentMethod === 'COD') {
+        khaltiSection.style.display = 'none';
+    }
+    
+    document.querySelectorAll('input[name="payment_method"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            if (this.value === 'COD') {
+                khaltiSection.style.display = 'none';
+            } else {
+                khaltiSection.style.display = 'block';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

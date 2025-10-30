@@ -1,0 +1,9 @@
+<!-- templates/orders/failure.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container text-center mt-5">
+    <h1 class="text-danger">Payment Failed</h1>
+    <p>Please try again.</p>
+    <a href="{% url 'cart:cart_detail' %}" class="btn btn-primary">Back to Cart</a>
+</div>
+{% endblock %}
