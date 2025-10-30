@@ -33,3 +33,17 @@ class Wishlist(models.Model):
 
         def __str__(self):
             return f"{self.user.username} ♥ {self.product.title}"
+        
+# products/models.py
+class Review(models.Model):
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(choices=[(i, i) for i in range(1, 6)])
+    comment = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('product', 'user')  # One review per user
+
+    def __str__(self):
+        return f"{self.user} - {self.product.title} - {self.rating} stars"

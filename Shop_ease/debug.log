@@ -72,3 +72,6 @@ requests.exceptions.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
 2025-10-30 21:21:53 [DEBUG] orders: Response status: 200
 2025-10-30 21:21:53 [DEBUG] orders: Response body: {"pidx":"LLp5xKL6DDQeDMbjQEkLHG","total_amount":15000,"status":"Completed","transaction_id":"h8VyamCpKNcx5zTse4Z3d2","fee":450,"refunded":false}
 2025-10-30 21:21:53 [DEBUG] orders: Khalti data: {'pidx': 'LLp5xKL6DDQeDMbjQEkLHG', 'total_amount': 15000, 'status': 'Completed', 'transaction_id': 'h8VyamCpKNcx5zTse4Z3d2', 'fee': 450, 'refunded': False}
+2025-10-30 21:33:30 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
+2025-10-30 21:33:30 [DEBUG] orders: pidx: LLp5xKL6DDQeDMbjQEkLHG, order_id: 14
+2025-10-30 21:33:30 [ERROR] orders: Order not found

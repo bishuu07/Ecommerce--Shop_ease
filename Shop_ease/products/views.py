@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Wishlist
 from django.shortcuts import redirect
 from cart.models import CartItem
+from django.contrib import messages
+from orders.models import  OrderItem
+from .models import Product, Review
 
 def home(request):
     products = Product.objects.all()
@@ -45,32 +48,42 @@ def home(request):
     #product = get_object_or_404(Product, pk=pk)
    # return render(request, 'products/detail.html', {'product': product})
 
-# products/views.py
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-
-    # Check cart status
-    in_cart = False
-    cart_quantity = 1
+    reviews = product.reviews.all().order_by('-created_at')
+    
+    user_review = None
     if request.user.is_authenticated:
-        cart_item = CartItem.objects.filter(user=request.user, product=product).first()
-        if cart_item:
-            in_cart = True
-            cart_quantity = cart_item.quantity
+        user_review = product.reviews.filter(user=request.user).first()
 
-    # Check wishlist status
-    is_in_wishlist = False
-    if request.user.is_authenticated:
-        is_in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'Please login to review.')
+            return redirect('login')
+        
+        if user_review:
+            messages.error(request, 'You have already reviewed this product.')
+        else:
+            rating = request.POST.get('rating')
+            comment = request.POST.get('comment')
+            if rating and comment:
+                Review.objects.create(
+                    product=product,
+                    user=request.user,
+                    rating=rating,
+                    comment=comment
+                )
+                messages.success(request, 'Thank you for your review!')
+            else:
+                messages.error(request, 'Please provide rating and comment.')
+        return redirect('products:product_detail', pk=pk)
 
     context = {
         'product': product,
-        'in_cart': in_cart,
-        'cart_quantity': cart_quantity,
-        'is_in_wishlist': is_in_wishlist,  # ← SEND THIS
+        'reviews': reviews,
+        'user_review': user_review,
     }
     return render(request, 'products/detail.html', context)
-
 
 @login_required
 def add_to_wishlist(request, pk):
