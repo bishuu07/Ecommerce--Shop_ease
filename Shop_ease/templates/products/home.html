@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-md-3">
+            <h5>Filter Products</h5>
+            <form method="get">
+                <div class="mb-3">
+                    <input type="text" name="q" class="form-control" placeholder="Search..." value="{{ search_query }}">
+                </div>
+
+                <div class="mb-3">
+                    <label>Category</label>
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if cat.id == selected_category|add:0 %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Material</label>
+                    <select name="material" class="form-select">
+                        <option value="">All Materials</option>
+                        {% for mat in materials %}
+                        <option value="{{ mat }}" {% if mat == selected_material %}selected{% endif %}>
+                            {{ mat|title }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label>Price Range</label>
+                    <input type="number" name="min_price" class="form-control mb-2" placeholder="Min Rs" value="{{ request.GET.min_price }}">
+                    <input type="number" name="max_price" class="form-control" placeholder="Max Rs" value="{{ request.GET.max_price }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                <a href="{% url 'products:home' %}" class="btn btn-secondary w-100 mt-2">Clear</a>
+            </form>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="col-md-9">
+            <h2>Shop Jewelry</h2>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" style="height:200px; object-fit:cover;">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="text-muted">{{ product.material|title }}</p>
+                            <p class="fw-bold">Rs {{ product.price }}</p>
+                            <div class="mt-auto">
+                                <a href="{% url 'products:product_detail' product.pk %}" class="btn btn-outline-primary btn-sm">View</a>
+                                <h5 class="card-title">{{ product.title }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No products found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

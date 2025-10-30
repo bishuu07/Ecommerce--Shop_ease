@@ -1,0 +1,69 @@
+<!-- templates/products/details.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Image -->
+        <div class="col-md-6">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded shadow" style="max-height: 500px; object-fit: cover;">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center border rounded" style="height: 500px;">
+                    <span class="text-muted fs-4">No Image</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Details -->
+        <div class="col-md-6">
+            <h2 class="mb-3">{{ product.title }}</h2>
+            <p class="text-muted">By <strong>{{ product.seller.username }}</strong></p>
+            
+            <h3 class="text-success mb-3">Rs {{ product.price }}</h3>
+
+            <div class="mb-3">
+                <span class="badge bg-dark">{{ product.get_material_display }}</span>
+                <span class="badge bg-info ms-2">{{ product.category.name }}</span>
+            </div>
+
+            <p><strong>In Stock:</strong> {{ product.stock }} items</p>
+            <p class="lead">{{ product.description|linebreaks }}</p>
+
+            <hr>
+
+            <!-- Add to Cart -->
+            {% if user.is_authenticated %}
+                <form action="{% url 'cart:cart_add' product.id %}" method="post" class="d-flex align-items-center gap-2 mb-3">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ cart_quantity }}" 
+                           min="1" max="{{ product.stock }}" class="form-control w-25">
+                    <button type="submit" class="btn btn-success">
+                        {% if in_cart %}Update Cart{% else %}Add to Cart{% endif %}
+                    </button>
+                </form>
+
+                <!-- Wishlist Heart Button -->
+                {% if is_in_wishlist %}
+                    <form action="{% url 'products:remove_from_wishlist' product.pk %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            Remove from Wishlist
+                        </button>
+                    </form>
+                {% else %}
+                    <form action="{% url 'products:add_to_wishlist' product.pk %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            Add to Wishlist
+                        </button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p><a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-sm">Login to Save</a></p>
+            {% endif %}
+
+            <a href="{% url 'products:home' %}" class="btn btn-secondary mt-3">Back to Shop</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
