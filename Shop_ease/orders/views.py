@@ -6,6 +6,7 @@ from django.contrib import messages
 from cart.models import CartItem
 from .models import Order, OrderItem
 import requests
+from products.models import Product
 
 import logging
 logger = logging.getLogger('orders')
@@ -172,3 +173,22 @@ def verify_payment(request):
 
     messages.error(request, 'Payment failed.')
     return render(request, 'orders/failure.html')
+
+
+
+@login_required
+def buy_now(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    quantity = int(request.POST.get('quantity', 1))
+
+    if quantity > product.stock:
+        messages.error(request, f"Only {product.stock} in stock!")
+        return redirect('products:product_detail', pk=product_id)
+
+    # Clear cart
+    CartItem.objects.filter(user=request.user).delete()
+
+    # Add single item
+    CartItem.objects.create(user=request.user, product=product, quantity=quantity)
+
+    return redirect('orders:checkout')

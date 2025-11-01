@@ -75,3 +75,13 @@ requests.exceptions.JSONDecodeError: Expecting value: line 2 column 1 (char 1)
 2025-10-30 21:33:30 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
 2025-10-30 21:33:30 [DEBUG] orders: pidx: LLp5xKL6DDQeDMbjQEkLHG, order_id: 14
 2025-10-30 21:33:30 [ERROR] orders: Order not found
+2025-11-01 16:27:44 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-11-01 16:27:44 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/initiate/ HTTP/1.1" 200 None
+2025-11-01 16:28:03 [DEBUG] orders: === VERIFY PAYMENT STARTED ===
+2025-11-01 16:28:03 [DEBUG] orders: pidx: UNKCzbLMG4sEALiNdrhCTY, order_id: 15
+2025-11-01 16:28:03 [DEBUG] orders: Order found: 15
+2025-11-01 16:28:03 [DEBUG] urllib3.connectionpool: Starting new HTTPS connection (1): a.khalti.com:443
+2025-11-01 16:28:03 [DEBUG] urllib3.connectionpool: https://a.khalti.com:443 "POST /api/v2/epayment/lookup/ HTTP/1.1" 200 None
+2025-11-01 16:28:03 [DEBUG] orders: Response status: 200
+2025-11-01 16:28:03 [DEBUG] orders: Response body: {"pidx":"UNKCzbLMG4sEALiNdrhCTY","total_amount":15000,"status":"Completed","transaction_id":"MQqeygrkbS4M7PghzSDboh","fee":450,"refunded":false}
+2025-11-01 16:28:03 [DEBUG] orders: Khalti data: {'pidx': 'UNKCzbLMG4sEALiNdrhCTY', 'total_amount': 15000, 'status': 'Completed', 'transaction_id': 'MQqeygrkbS4M7PghzSDboh', 'fee': 450, 'refunded': False}

@@ -3,47 +3,79 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
+        <!-- Product Image -->
         <div class="col-md-6">
-            <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.title }}">
+            <img src="{{ product.image.url }}" class="img-fluid rounded shadow" alt="{{ product.title }}">
         </div>
+
+        <!-- Product Details -->
         <div class="col-md-6">
-            <h2>{{ product.title }}</h2>
-            <p><strong>Price:</strong> Rs {{ product.price }}</p>
-            <p><strong>Stock:</strong> {{ product.stock }}</p>
-            <p>{{ product.description }}</p>
-            <a href="{% url 'cart:cart_add' product.id %}" class="btn btn-primary">Add to Cart</a>
+            <h2 class="mb-3">{{ product.title }}</h2>
+            <p class="text-muted mb-2">{{ product.description }}</p>
+            <h4 class="text-primary mb-3">Rs {{ product.price }}</h4>
+            <p class="mb-3"><strong>Stock:</strong> 
+                <span class="{% if product.stock > 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ product.stock }} in stock
+                </span>
+            </p>
+
+            <!-- QUANTITY + ADD TO CART + BUY NOW -->
+            {% if product.stock > 0 %}
+            <form method="post" action="{% url 'cart:cart_add' product.id %}" class="d-inline">
+                {% csrf_token %}
+                <div class="input-group mb-3" style="width: 150px;">
+                    <button type="button" class="btn btn-outline-secondary" onclick="this.parentNode.querySelector('input[type=number]').stepDown()">-</button>
+                    <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+                    <button type="button" class="btn btn-outline-secondary" onclick="this.parentNode.querySelector('input[type=number]').stepUp()">+</button>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg me-2">
+                    Add to Cart
+                </button>
+            </form>
+
+            <!-- BUY NOW BUTTON -->
+            <form method="post" action="{% url 'orders:buy_now' product.id %}" class="d-inline">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-success btn-lg">
+                    Buy Now
+                </button>
+            </form>
+            {% else %}
+            <p class="text-danger fw-bold">Out of Stock</p>
+            {% endif %}
         </div>
     </div>
 
-    <!-- REVIEW SECTION BELOW -->
+    <!-- REVIEWS BELOW -->
     <div class="mt-5">
-        <h4>Customer Reviews</h4>
+        <h4>Customer Reviews ({{ reviews.count }})</h4>
         <hr>
-
-        <!-- SHOW ALL REVIEWS -->
         {% for review in reviews %}
-        <div class="border p-3 mb-3 rounded">
-            <strong>{{ review.user.username }}</strong>
-            <span class="text-warning">
+        <div class="border p-3 mb-3 rounded bg-light">
+            <div class="d-flex justify-content-between">
+                <strong>{{ review.user.username }}</strong>
+                <small class="text-muted">{{ review.created_at|date:"M d, Y" }}</small>
+            </div>
+            <div class="text-warning mb-1">
                 {% for i in "12345" %}
                     {% if forloop.counter <= review.rating %}Star{% else %}Star{% endif %}
                 {% endfor %}
-            </span>
-            <small class="text-muted float-end">{{ review.created_at|date:"M d, Y" }}</small>
-            <p class="mt-2">{{ review.comment }}</p>
+            </div>
+            <p class="mb-0">{{ review.comment }}</p>
         </div>
         {% empty %}
-        <p>No reviews yet. Be the first!</p>
+        <p class="text-muted">No reviews yet. Be the first!</p>
         {% endfor %}
 
-        <!-- REVIEW FORM (ONLY IF LOGGED IN & NOT REVIEWED) -->
+        <!-- REVIEW FORM -->
         {% if user.is_authenticated %}
             {% if not user_review %}
-            <form method="post" class="mt-4">
+            <form method="post" class="mt-4 p-4 border rounded bg-white">
                 {% csrf_token %}
                 <h5>Write a Review</h5>
                 <div class="mb-3">
-                    <label>Rating</label>
+                    <label class="form-label">Rating</label>
                     <select name="rating" class="form-control" required>
                         <option value="">-- Select --</option>
                         {% for i in "12345" %}
@@ -52,7 +84,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label>Comment</label>
+                    <label class="form-label">Comment</label>
                     <textarea name="comment" class="form-control" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-success">Submit Review</button>
