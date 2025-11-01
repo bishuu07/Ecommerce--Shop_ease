@@ -27,6 +27,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Order {self.id} - {self.user.username} - {self.payment_method}"
+   
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
@@ -34,5 +35,9 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price at time of purchase
 
+    @property
     def __str__(self):
         return f"{self.quantity} x {self.product.title}"
+    
+    def __str__(self):
+        return f"{self.product.title} x {self.quantity}"

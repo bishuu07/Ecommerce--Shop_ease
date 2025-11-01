@@ -7,6 +7,7 @@ from cart.models import CartItem
 from .models import Order, OrderItem
 import requests
 from products.models import Product
+from decimal import Decimal
 
 import logging
 logger = logging.getLogger('orders')
@@ -61,7 +62,7 @@ def initiate_payment(request):
                 order=order,
                 product=item.product,
                 quantity=item.quantity,
-                price=item.product.price
+                price=Decimal(str(item.product.price))
             )
 
         # === CLEAR CART ===
@@ -192,3 +193,17 @@ def buy_now(request, product_id):
     CartItem.objects.create(user=request.user, product=product, quantity=quantity)
 
     return redirect('orders:checkout')
+
+
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'orders/history.html', {'orders': orders})
+
+@login_required
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'orders/detail.html', {'order': order})
+
+

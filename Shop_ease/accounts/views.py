@@ -4,6 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from .models import Profile
 
 def signup(request):
     if request.method == 'POST':
@@ -32,6 +33,19 @@ def user_logout(request):
     logout(request)
     return redirect('products:home')
 
+
+
 @login_required
 def profile(request):
-    return render(request, 'accounts/profile.html')
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        request.user.first_name = request.POST.get('first_name')
+        request.user.last_name = request.POST.get('last_name')
+        request.user.email = request.POST.get('email')
+        profile.phone = request.POST.get('phone')
+        profile.address = request.POST.get('address')
+        request.user.save()
+        profile.save()
+        messages.success(request, 'Profile updated!')
+        return redirect('accounts:profile')
+    return render(request, 'accounts/profile.html', {'profile': profile})
